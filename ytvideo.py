@@ -1,8 +1,10 @@
 from pytube import YouTube
 import tkinter as tk #basic lib for gui select folder
 from tkinter import filedialog
- 
-def download_video(url,save_path):
+import instaloader #library for instagram
+from instareel import download_instagram_reel
+
+def download_youtube_video(url, save_path):
     try:
         yt=YouTube(url)
         streams=yt.streams.filter(progressive=True,file_extension="mp4")
@@ -13,6 +15,7 @@ def download_video(url,save_path):
         print(e)
 
 
+
 def open_file_dialog():
     folder=filedialog.askdirectory()
     if folder:
@@ -20,19 +23,31 @@ def open_file_dialog():
     return folder
 
 
-if __name__=="__main__":
-    root =tk.Tk()
-    root.withdraw()#hides window
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.withdraw()  # hides window
     
-    vid_url=input("Enter the link: ")
-    save_dir=open_file_dialog()
+    vid_url = input("Enter the video link : ")
+    save_dir = open_file_dialog()
 
     if save_dir:
         print("Downloading... ")
-        download_video(vid_url,save_dir)
-        
+        if "youtube.com" in vid_url or "youtu.be" in vid_url:
+            download_youtube_video(vid_url, save_dir)
+        elif "instagram.com" in vid_url:
+            download_instagram_reel(vid_url, save_dir)
+        else:
+            print("Invalid URL. Please provide a valid YouTube or Instagram Reel URL.")
     else:
-        print("Invalid save Location.")
+        print("Invalid save location.")
+
+
+
+
+
+
+
+#Tkinter UI form for yt video downloader
 
 # from pytube import YouTube
 # import tkinter as tk
